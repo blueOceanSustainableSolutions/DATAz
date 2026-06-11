@@ -25,27 +25,6 @@ The [`zlt_surrogate_models`](zlt_surrogate_models/) directory contains the data 
 
 # Getting Started
 
-## DTO Visualisation
-
-The DATAz DTO site is presented through open access on blueOASIS' DTO dashboard framework, accessed via https://app.hydrotwin.ai. For access, please email info@blueoasis.pt and state your use-case.  
-
-![1_main_view.png](visualisation/1_main_view.png)
-
-A user guide is provided in [visualisation](visualisation). 
-
-The Hydrotwin dashboard contains:
-
-- **Live status panel**: Real-time Hydrotwin environmental readings, sensor status, and environmental measurement availability.
-- **Detection timeline**: Chronological view of all detection events across modalities.
-- **Alert management console**: Active alerts, historical alert log, and response action tracking.
-
-The Hydrotwin dashboard encapsulates site-specific views, where:
-
-- A single site (DATAz, Azores) shows a unified view of all sensors.
-- Individual sensors can be selected for deeper analysis.
-- In-situ sensors tied to an acoustic deployment can be viewed through individual sensor tabs.
-- HT-C units offer a live listening mode.
-
 ## System Setup
 
 **1) Clone the repository**
@@ -125,34 +104,25 @@ bash scripts/run_raindrop.sh
 
 Depending on the selected model, the setup process may take several minutes to complete. Please refer to the User Manual and the Developer Manual for information on configuration options, input data requirements, and model outputs.
 
-# Adding Data to Blob Storage
 
-The `public` remote configured in the previous section provides read-only access and can only be used to download repository data. Therefore, to upload new data to the Azure Blob Storage container, repository maintainers with the appropriate write permissions must use the default `azblob` remote. This remote is configured with the write credentials stored in the local `.dvc/config.local` file.
+## DTO Visualisation
 
-To start tracking a new file with DVC, first remove it from Git tracking and then add it to DVC. This ensures that the file is managed by DVC rather than being stored in the Git repository:
+The DATAz DTO site is presented through open access on blueOASIS' DTO dashboard framework, accessed via https://app.hydrotwin.ai. For access, please email info@blueoasis.pt and state your use-case.  
 
-```bash
-git rm --cached <path/to/file>
-dvc add <path/to/file>
-```
+![1_main_view.png](visualisation/1_main_view.png)
 
-Running `dvc add` creates a lightweight `.dvc` metadata file and updates the corresponding `.gitignore` file such that the large data file is not committed to Git. Commit these changes to the repository:
+A user guide is provided in [visualisation](visualisation). 
 
-```bash
-git add <path/to/file>.dvc <its-folder>/.gitignore
-git commit -m "Track <file> with DVC"
-```
+The Hydrotwin dashboard contains:
 
-Once the changes are committed, upload the large data file to the DVC remote and push the Git commit:
+- **Live status panel**: Real-time Hydrotwin environmental readings, sensor status, and environmental measurement availability.
+- **Detection timeline**: Chronological view of all detection events across modalities.
+- **Alert management console**: Active alerts, historical alert log, and response action tracking.
 
-```bash
-dvc push
-git push
-```
+The Hydrotwin dashboard encapsulates site-specific views, where:
 
-To retrieve files that have been added by other contributors, first update your local Git repository, and then download the corresponding data from the `public` DVC remote:
+- A single site (DATAz, Azores) shows a unified view of all sensors.
+- Individual sensors can be selected for deeper analysis.
+- In-situ sensors tied to an acoustic deployment can be viewed through individual sensor tabs.
+- HT-C units offer a live listening mode.
 
-```bash
-git pull
-dvc pull -r public
-```
