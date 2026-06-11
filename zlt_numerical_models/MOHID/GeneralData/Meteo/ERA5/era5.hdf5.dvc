@@ -1,0 +1,5 @@
+outs:
+- md5: 883ee803ee7b7671f78ddc4292815e12
+  size: 11683528
+  hash: md5
+  path: era5.hdf5

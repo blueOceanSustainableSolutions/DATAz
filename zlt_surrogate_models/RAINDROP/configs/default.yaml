@@ -1,0 +1,42 @@
+data:
+  ais_dir: "PATH_TO_SIMULATION/out/ais"                # Path to AIS data directory (CSV files) 
+  spl_dir: "PATH_TO_SIMULATION/out/pickles"            # Path to SPL data directory (Pickle files) 
+  example_nc_path: "PATH_TO_SIMULATION/out/nc/SPL_2025-06-01T00:00:00.nc" # Example NetCDF file for dataset initialization
+  bathy_csv: "PATH_TO_SIMULATION/out/bathymetry.csv"   # Path to bathymetry CSV file (columns: lat, lon, depth)
+  coastline_shp: "PATH_TO_SIMULATION/out/coastline/coastline.shp"   # Path to coastline shapefile (for masking land areas)
+  cache_dir: "cache"
+  crop_size: 256
+  use_63hz: true
+  use_pascal: false                      # Train on Pascal (linear scale) instead of dB re 1uPa
+  num_rays: 360                          # Angle resolution
+  ray_points: 125                        # Radius distance resolution (number of points along each ray)
+
+
+model:
+  bathy_latent: 128                      # Latent dimension for bathymetry encoder
+  ais_latent: 64                         # Latent dimension for AIS encoder
+
+
+training:
+  batch_size: 32
+  num_epochs: 200                        
+  lr: 0.0001
+  seed: 42                               # For reproducibility 
+  train_split: 0.8
+  val_split: 0.1
+  output_dir: "results/figures"
+  checkpoint_dir: "checkpoints"
+  use_cuda: true
+
+
+mlflow:
+  enabled: false
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment_name: "RAINDROP AI Surrogate Model Comparison"
+
+
+evaluation:
+  batch_size: 32                     # Can differ from training batch size
+  checkpoint_path: "checkpoints/raindrop_surrogate.pth"       # model to evaluate
+  output_dir: "results/evaluation"
+  num_plots: 5                       # Number of samples to plot radial comparisons for

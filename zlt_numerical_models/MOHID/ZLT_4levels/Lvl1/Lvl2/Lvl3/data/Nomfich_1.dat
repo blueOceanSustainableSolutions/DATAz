@@ -1,0 +1,40 @@
+! Bathymetry file
+IN_BATIM      : ../../../GeneralData/Bathymetry/ZLT_Lvl3_2000m_smooth_v02.dat
+
+! Input files
+ASSIMILA_DAT  : ../Lvl2/Lvl3/data/Assimilation_1.dat
+SURF_DAT      : ../Lvl2/Lvl3/data/Atmosphere_1.dat
+DOMAIN        : ../Lvl2/Lvl3/data/Geometry_1.dat
+TURB_GOTM     : ../Lvl2/Lvl3/data/GOTM_1.dat
+IN_DAD3D      : ../Lvl2/Lvl3/data/Hydrodynamic_1.dat
+BOT_DAT       : ../Lvl2/Lvl3/data/InterfaceSedimentWater_1.dat
+AIRW_DAT      : ../Lvl2/Lvl3/data/InterfaceWaterAir_1.dat
+IN_MODEL      : ../Lvl2/Lvl3/data/Model_1.dat
+IN_TURB       : ../Lvl2/Lvl3/data/Turbulence_1.dat
+DISPQUAL      : ../Lvl2/Lvl3/data/WaterProperties_1.dat
+
+! Output files
+ROOT          : ../Lvl2/Lvl3/res/
+ROOT_SRT      : ../Lvl2/Lvl3/res/Run_1/
+ASSIMILA_HDF  : ../Lvl2/Lvl3/res/Assimilation_1.hdf
+SURF_HDF      : ../Lvl2/Lvl3/res/Atmosphere_1.hdf
+OUT_DESF      : ../Lvl2/Lvl3/res/Hydrodynamic_1.hdf
+BOT_HDF       : ../Lvl2/Lvl3/res/InterfaceSedimentWater_1.hdf
+AIRW_HDF      : ../Lvl2/Lvl3/res/InterfaceWaterAir_1.hdf
+TURB_HDF      : ../Lvl2/Lvl3/res/Turbulence_1.hdf
+EUL_HDF       : ../Lvl2/Lvl3/res/WaterProperties_1.hdf
+
+! Restart files
+TURB_FIN      : ../Lvl2/Lvl3/res/GOTM_1.fin
+OUT_FIN       : ../Lvl2/Lvl3/res/Hydrodynamic_1.fin
+BOT_FIN       : ../Lvl2/Lvl3/res/InterfaceSedimentWater_1.fin
+AIRW_FIN      : ../Lvl2/Lvl3/res/InterfaceWaterAir_1.fin
+EUL_FIN       : ../Lvl2/Lvl3/res/WaterProperties_1.fin
+
+! Initialization files
+TURB_INI      : ../Lvl2/Lvl3/res/GOTM_0.fin
+IN_CNDI       : ../Lvl2/Lvl3/res/Hydrodynamic_0.fin
+BOT_INI       : ../Lvl2/Lvl3/res/InterfaceSedimentWater_0.fin
+AIRW_INI      : ../Lvl2/Lvl3/res/InterfaceWaterAir_0.fin
+EUL_INI       : ../Lvl2/Lvl3/res/WaterProperties_0.fin
+

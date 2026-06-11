@@ -1,0 +1,46 @@
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=64G
+#SBATCH --partition=normal-x86
+#SBATCH --job-name=swan-preprocess-all
+#SBATCH --time=08:00:00
+#SBATCH --account=f202500265dt4stf2x
+#SBATCH --chdir=/projects/F202500265DT4STF2/HPC_SWAN_Surrogate_Github/src/1_General_Preprocessing
+#SBATCH --output=logs/%j.out
+#SBATCH --error=logs/%j.err
+
+set -euo pipefail
+
+WORKDIR="/projects/F202500265DT4STF2/HPC_SWAN_Surrogate_Github/src/1_General_Preprocessing"
+PROJECT_ROOT="/projects/F202500265DT4STF2"
+FOLDER_ROOT = "$PROJECT_ROOT/HPC_SWAN_Surrogate_Github/data/general_preprocessing/"
+CONDA_ENV_NAME="swan_surrogate_env"
+
+CASE_FOLDER="BC_run18_092025_122025" # TODO: fill in the name of the case folder you want to preprocess
+
+mkdir -p "$WORKDIR/logs"
+
+module purge
+
+source /projects/F202500265DT4STF2/miniconda3/etc/profile.d/conda.sh
+set +u
+conda activate "$CONDA_ENV_NAME"
+# Ensure conda-provided libraries (libstdc++) are found before system libs
+export LD_LIBRARY_PATH="${CONDA_PREFIX:-/projects/F202500265DT4STF2/miniconda3/envs/$CONDA_ENV_NAME}/lib:${LD_LIBRARY_PATH:-}"
+set -u
+
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+
+cd "$WORKDIR"
+export PYTHONPATH="$WORKDIR:$PROJECT_ROOT:${PYTHONPATH:-}"
+
+echo "Starting preprocessing for case folder: $CASE_FOLDER on $(hostname)"
+python run_all_preprocessing.py --folder "$CASE_FOLDER" \
+	--save-dir "$FOLDER_ROOT/grid_128_128/$CASE_FOLDER"
+

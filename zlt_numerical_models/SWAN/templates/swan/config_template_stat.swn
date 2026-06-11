@@ -1,0 +1,34 @@
+$***********MODEL INPUT*********************************
+$
+SET NAUTical
+MODE TWODimensional
+COORDinates {coordinates_type}
+
+{grid_desc}
+
+INPgrid BOTtom {input_grid} EXCeption -9
+READinp BOTtom fac=1 'data\bathy.bot' idla=1 0 FREE
+
+{bdc}
+
+TRIAD
+OFF QUAD
+
+NUMeric STOPC 0.005 0.01 0.005 99.9 STAT 500 0.01
+
+OUTPUT OPTIONS '%' TABLE 16 BLOCK 6 {output_width}
+
+BLOCK 'COMPGRID' NOHEAD 'results\HSig_atlantic_{wind_start}_{wind_end}.dat' LAYOUT 1 HSig
+BLOCK 'COMPGRID' NOHEAD 'results\PDIR_atlantic_{wind_start}_{wind_end}.dat' LAYOUT 1 PDIR
+BLOCK 'COMPGRID' NOHEAD 'results\RTP_atlantic_{wind_start}_{wind_end}.dat' LAYOUT 1 RTP
+
+POINTS 'P1' 37.72577 -25.7214 $First point
+
+TABLE 'P1' HEAD 'results\P1_atlantic_{wind_start}_{wind_end}.tab' & 
+DEPth HSign DIR WLEN PDIR TDIR TM01 RTP TM02 TMM10 PER
+
+SPECout 'P1' SPEC2D ABS 'results\P1_atlantic_{wind_start}_{wind_end}.spc'
+
+COMPUTE STATionary {wind_start}
+
+STOP

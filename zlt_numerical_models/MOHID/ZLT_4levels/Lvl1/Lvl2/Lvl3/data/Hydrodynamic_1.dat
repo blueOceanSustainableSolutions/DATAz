@@ -1,0 +1,57 @@
+! Restart
+CONTINUOUS              : 0 ! 0 = spin-up run, 1 = continue from previous solution
+
+! Submodel
+SUBMODEL                : 1
+SUBMODEL_FATHER_HOT_START : 1 ! Initial values for submodel come from parent model. Only for spin-up
+SUBMODEL_EXTRAPOLATE    : 1 ! Extrapolate hydrodynamic initial values from parent model
+
+! Data assimilation
+DATA_ASSIMILATION       : 1
+LOCAL_SOLUTION          : 2 ! 1 = NoLocalSolution, 2 = Submodel, 3 = AssimilationField, 4 = Gauge, 5 = AssimilaPlusSubModel, 6 = GaugePlusModel, 7 = AssimilaGaugeSubModel
+MISSING_NULL            : 1 ! Replace missing values by zero
+
+! Output
+OUTPUT_TIME             : 0.0 43200.0
+SURFACE_OUTPUT_TIME     : 0.0 3600.0
+TIME_SERIE              : 1
+TIME_SERIE_LOCATION     : ../../../GeneralData/TimeSeries/TimeSerieLocation.dat
+RESIDUAL                : 1
+
+! Tidal forcing
+TIDE                    : 0
+
+! Baroclinic forcing
+BAROCLINIC              : 1
+RAMP                    : 1 ! Ramp baroclinic force. Only for spin-up
+RAMP_PERIOD             : 259200.0
+BRFORCE                 : 1 ! Relax baroclinic force
+
+! Atmospheric forcing
+ATM_PRESSURE            : 1
+ATM_RAMP                : 1 ! Ramp pressure force. Only for spin-up
+ATM_PERIOD              : 259200.0
+ATM_PRESSURE_TYPE       : 1 ! 1 = from "atmospheric pressure", 2 = from "mslp" (mean sea level pressure)
+WIND                    : 2 ! 0 = off, 1 = on, 2 = Apply wind forcing with ramp period. Only for spin-up
+WIND_SMOOTH_PERIOD      : 259200.0 ! Ramp wind force. Only for spin-up
+
+! Other forces
+TIDEPOTENTIAL           : 1
+CORIOLIS                : 1
+CENTRIFUGAL             : 1
+
+! Damping
+BIHARMONIC              : 1
+BIHARMONIC_COEF         : 8.0e7 ! dx^3/100
+RADIATION               : 2 ! 2 = Flather radiation scheme at open boundary
+FLATHER_COLD_PERIOD     : 259200.0 ! Relax water level solution for a period of time. Only for spin-up
+
+! Temporal discretization
+DISCRETIZATION          : 2 ! 1 = Abbott 4-equation scheme, 2 = Leendertse 6-equation scheme
+
+! Spatial discretization
+ADV_METHOD_H            : 4 ! 1 = UpwindOrder1, 2 = UpwindOrder2, 3 = UpwindOrder3, 4 = P2_TVD, 5 = CentralDif, 6 = LeapFrog
+TVD_LIMIT_H             : 4 ! 1 = MinMod, 2 = VanLeer, 3 = Muscl, 4 = Superbee, 5 = PDM
+ADV_METHOD_V            : 4 ! 1 = UpwindOrder1, 2 = UpwindOrder2, 3 = UpwindOrder3, 4 = P2_TVD, 5 = CentralDif, 6 = LeapFrog
+TVD_LIMIT_V             : 4 ! 1 = MinMod, 2 = VanLeer, 3 = Muscl, 4 = Superbee, 5 = PDM
+

@@ -1,0 +1,15 @@
+[submodule "software/MOHID"]
+	path = software/MOHID
+	url = https://github.com/Mohid-Water-Modelling-System/Mohid.git
+[submodule "software/RAINDROP"]
+	path = software/RAINDROP
+	url = https://github.com/blueOceanSustainableSolutions/RAINDROP.git
+[submodule "software/REEF3D"]
+	path = software/REEF3D
+	url = https://github.com/REEF3D/REEF3D.git
+[submodule "software/SWAN"]
+	path = software/SWAN
+	url = https://gitlab.tudelft.nl/citg/wavemodels/swan.git
+[submodule "software/WW3"]
+	path = software/WW3
+	url = https://github.com/NOAA-EMC/WW3.git

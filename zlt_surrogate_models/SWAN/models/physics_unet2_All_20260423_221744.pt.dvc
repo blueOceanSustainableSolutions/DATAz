@@ -1,0 +1,5 @@
+outs:
+- md5: 7b1156cf33ccd62121dd5b3b72e43783
+  size: 396731594
+  hash: md5
+  path: physics_unet2_All_20260423_221744.pt

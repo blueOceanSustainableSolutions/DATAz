@@ -1,0 +1,11 @@
+--extra-index-url https://download.pytorch.org/whl/cu124
+numpy
+dask
+scikit-learn
+torch
+xarray
+matplotlib
+pandas
+netCDF4
+scipy
+prettytable

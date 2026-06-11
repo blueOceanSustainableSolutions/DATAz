@@ -1,0 +1,5 @@
+outs:
+- md5: 41f5d4455943e93e3536e99dfa0df9d3
+  size: 5569603
+  hash: md5
+  path: bathy_atlantic.nc

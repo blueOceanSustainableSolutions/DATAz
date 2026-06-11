@@ -1,0 +1,55 @@
+FILE_TIDAL_COMPONENTS   : ../../../GeneralData/Ocean/FES/FES2014_ZLT.hdf5
+TRIANGULATION           : 0
+
+<beginHDFgauges>
+EXTRAPOLATE             : 1
+HARMONICS               : 1
+EXTRACT_HARMONICS       : 1
+SPATIAL_INTERPOL        : 1
+HARMONICS_FIELD_DIM     : M2/amplitude
+
+NAME                    : water level
+UNITS                   : m
+
+LONGITUDE               : -28 30 0
+LATITUDE                : 38 0 0
+METRIC_X                : -28.5
+METRIC_Y                : 38.0
+REF_LEVEL               : 1.0
+TIME_REF                : -1.0
+
+<<beginharmonics>>
+SA
+SSA
+MU2
+NU2
+MSF
+2N2
+J1
+K1
+K2
+L2
+M2
+M3
+M4
+M6
+M8
+MF
+MKS2
+MM
+MN4
+MS4
+N2
+O1
+P1
+Q1
+R2
+S1
+S2
+S4
+T2
+EPS2
+LDA2
+<<endharmonics>>
+<endHDFgauges>
+

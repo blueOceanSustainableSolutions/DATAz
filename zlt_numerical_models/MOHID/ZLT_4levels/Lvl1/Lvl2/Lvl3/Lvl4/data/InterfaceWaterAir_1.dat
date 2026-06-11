@@ -1,0 +1,111 @@
+OUTPUT_TIME             : 0.0 43200.0
+TIME_SERIE              : 1
+TIME_SERIE_LOCATION     : ../../../GeneralData/TimeSeries/TimeSerieLocation.dat
+
+
+<begin_rugosity>
+DEFAULTVALUE            : 0.0025
+<end_rugosity>
+
+
+<beginproperty>
+NAME                    : wind stress
+UNITS                   : N/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+DEFINE_CDWIND           : 0
+<endproperty>
+
+
+<beginproperty>
+NAME                    : surface radiation
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+
+ALBEDO                  : 0.06
+<endproperty>
+
+
+<beginproperty>
+NAME                    : latent heat
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+
+
+<beginproperty>
+NAME                    : sensible heat
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+
+
+<beginproperty>
+NAME                    : net long wave radiation
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+
+
+<beginproperty>
+NAME                    : downward long wave radiation
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : upward long wave radiation
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+
+
+<beginproperty>
+NAME                    : non solar flux
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+

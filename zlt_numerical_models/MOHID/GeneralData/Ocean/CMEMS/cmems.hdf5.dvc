@@ -1,0 +1,5 @@
+outs:
+- md5: 166472b5ab58cc440886f6879a44c8b0
+  size: 200051672
+  hash: md5
+  path: cmems.hdf5

@@ -1,0 +1,5 @@
+[core]
+    remote = azblob
+['remote "azblob"']
+    url = azure://dvcstore/
+    account_name = datazstorage

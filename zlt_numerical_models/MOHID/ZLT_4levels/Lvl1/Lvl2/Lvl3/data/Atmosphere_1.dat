@@ -1,0 +1,122 @@
+OUTPUT_TIME             : 0.0 43200.0
+TIME_SERIE              : 1
+TIME_SERIE_LOCATION     : ../../../GeneralData/TimeSeries/TimeSerieLocation.dat
+
+WIND_MEASUREMENT_HEIGHT : 10.0
+AIR_MEASUREMENT_HEIGHT  : 2.0
+OVERRIDE_WIND_VEL_STANDARD : 1
+
+
+<beginproperty>
+NAME                    : atmospheric pressure
+UNITS                   : Pa
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 101325.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : wind velocity
+UNITS                   : m/s
+TIME_SERIE              : 0
+OUTPUT_HDF              : 0
+
+DEFAULTVALUE            : 0.0 0.0 
+<endproperty>
+
+
+<beginproperty>
+NAME                    : wind velocity X
+UNITS                   : m/s
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : wind velocity Y
+UNITS                   : m/s
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : solar radiation
+UNITS                   : W/m^2
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+
+ALBEDO                  : 0.06
+<endproperty>
+
+
+<beginproperty>
+NAME                    : air temperature
+UNITS                   : degC
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 18.0
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : relative humidity
+UNITS                   : fraction
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.75
+FILE_IN_TIME            : HDF
+FILENAME                : ../../../GeneralData/Meteo/ERA5/era5.hdf5
+FIELD4D                 : 1
+SPATIAL_INTERPOL        : 1
+EXTRAPOLATE             : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : cloud cover
+UNITS                   : fraction
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+
+DEFAULTVALUE            : 0.0
+FILE_IN_TIME            : NONE
+REMAIN_CONSTANT         : 0
+<endproperty>
+

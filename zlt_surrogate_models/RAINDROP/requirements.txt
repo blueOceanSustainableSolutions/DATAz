@@ -1,0 +1,20 @@
+# requirements.txt
+
+# Data Analysis
+numpy==1.26.4
+scipy==1.12.0
+pandas==2.2.1
+
+# Geospatial/Specialized Data Formats
+xarray==2024.2.0
+netCDF4==1.6.5
+geopandas==0.14.3
+shapely==2.0.3
+
+# Visualization/Tracking
+matplotlib==3.8.3
+mlflow==2.11.1
+
+# Utils
+PyYAML==6.0.1
+tqdm==4.66.2

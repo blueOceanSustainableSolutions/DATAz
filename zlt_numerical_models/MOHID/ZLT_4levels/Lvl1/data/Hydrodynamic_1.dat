@@ -1,0 +1,45 @@
+! Restart
+CONTINUOUS              : 0 ! 0 = spin-up run, 1 = continue from previous solution
+
+! Submodel
+SUBMODEL                : 0
+
+! Data assimilation
+DATA_ASSIMILATION       : 0
+
+! Output
+!OUTPUT_TIME             : 0.0 43200.0
+SURFACE_OUTPUT_TIME     : 0.0 3600.0
+TIME_SERIE              : 1
+TIME_SERIE_LOCATION     : ../../../GeneralData/TimeSeries/TimeSerieLocation.dat
+RESIDUAL                : 1
+
+! Tidal forcing
+TIDE                    : 1
+SLOWSTART               : 86400.0 ! Ramp tidal forcing. Only for spin-up
+
+! Baroclinic forcing
+BAROCLINIC              : 0
+
+! Atmospheric forcing
+ATM_PRESSURE            : 0
+WIND                    : 0
+
+! Other forces
+TIDEPOTENTIAL           : 1
+CORIOLIS                : 1
+CENTRIFUGAL             : 1
+
+! Damping
+BIHARMONIC              : 1
+BIHARMONIC_COEF         : 6.4e8 ! dx^3/100
+
+! Temporal discretization
+DISCRETIZATION          : 2 ! 1 = Abbott 4-equation scheme, 2 = Leendertse 6-equation scheme
+
+! Spatial discretization
+ADV_METHOD_H            : 4 ! 1 = UpwindOrder1, 2 = UpwindOrder2, 3 = UpwindOrder3, 4 = P2_TVD, 5 = CentralDif, 6 = LeapFrog
+TVD_LIMIT_H             : 4 ! 1 = MinMod, 2 = VanLeer, 3 = Muscl, 4 = Superbee, 5 = PDM
+ADV_METHOD_V            : 4 ! 1 = UpwindOrder1, 2 = UpwindOrder2, 3 = UpwindOrder3, 4 = P2_TVD, 5 = CentralDif, 6 = LeapFrog
+TVD_LIMIT_V             : 4 ! 1 = MinMod, 2 = VanLeer, 3 = Muscl, 4 = Superbee, 5 = PDM
+

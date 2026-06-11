@@ -1,0 +1,6 @@
+! Horizontal sub-grid-scale turbulent viscosity
+VISCOSITY_H             : 400.0 ! dx/10
+
+! Vertical sub-grid-scale turbulent viscosity
+VISCOSITY_V             : 0.001
+

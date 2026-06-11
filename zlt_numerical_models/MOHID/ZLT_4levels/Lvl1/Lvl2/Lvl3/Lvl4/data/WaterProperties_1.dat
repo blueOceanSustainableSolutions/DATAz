@@ -1,0 +1,48 @@
+CONTINUOUS              : 0 ! 0 = spin-up run, 1 = continue from previous solution
+
+OUTPUT_TIME             : 0.0 43200.0
+SURFACE_OUTPUT_TIME     : 0.0 3600.0
+TIME_SERIE              : 1
+TIME_SERIE_LOCATION     : ../../../GeneralData/TimeSeries/TimeSerieLocation.dat
+
+REFERENCE_DENSITY       : 1025.0
+
+
+<beginproperty>
+NAME                    : salinity
+UNITS                   : PSU
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+OUTPUT_SURFACE_HDF      : 1
+
+DEFAULTVALUE            : 36.0
+TYPE_ZUV                : z
+SUBMODEL                : 1
+SUBMODEL_INI            : 1
+SUBMODEL_EXTRAPOLATE    : 1
+
+ADVECTION_DIFFUSION     : 1
+BOUNDARY_CONDITION      : 5 ! 5 = from parent model
+DATA_ASSIMILATION       : 1
+<endproperty>
+
+
+<beginproperty>
+NAME                    : temperature
+UNITS                   : degC
+TIME_SERIE              : 1
+OUTPUT_HDF              : 1
+OUTPUT_SURFACE_HDF      : 1
+
+DEFAULTVALUE            : 16.0
+TYPE_ZUV                : z
+SUBMODEL                : 1
+SUBMODEL_INI            : 1
+SUBMODEL_EXTRAPOLATE    : 1        
+
+ADVECTION_DIFFUSION     : 1
+BOUNDARY_CONDITION      : 5 ! 5 = from parent model
+DATA_ASSIMILATION       : 1
+SURFACE_FLUXES          : 1 ! Turn on for water-atmosphere coupling
+<endproperty>
+

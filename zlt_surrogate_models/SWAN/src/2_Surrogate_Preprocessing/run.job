@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=128G
+#SBATCH --partition=dev-x86
+#SBATCH --job-name=swan-preprocess
+#SBATCH --time=04:00:00
+#SBATCH --account=f202500265dt4stf2x
+#SBATCH --chdir=/projects/F202500265DT4STF2/HPC_SWAN_Surrogate_Github/src/2_Surrogate_Preprocessing
+#SBATCH --output=logs/%j.out
+#SBATCH --error=logs/%j.err
+
+set -euo pipefail
+
+WORKDIR="/projects/F202500265DT4STF2/HPC_SWAN_Surrogate_Github/src/2_Surrogate_Preprocessing"
+PROJECT_ROOT="/projects/F202500265DT4STF2/HPC_SWAN_Surrogate_Github"
+CONDA_ENV_NAME="swan_surrogate_env"
+
+# Case configuration
+CASE_SEQUENCES_ROOT="$PROJECT_ROOT/data/general_preprocessing/sequences"
+LOG_DIR="$WORKDIR/logs"
+
+# Sequence dataset profile. Change these values per stage.
+SEQUENCE_COUNT="500"
+SPLIT_STRATEGY="temporal"   # options: "temporal", "random"
+VALIDATION_FIGURES=2
+
+if [[ "${SEQUENCE_COUNT,,}" == "all" ]]; then
+  # Full-dataset mode must avoid extra random-allocation overhead.
+  SPLIT_STRATEGY="temporal"
+fi
+
+mkdir -p "$LOG_DIR"
+
+module purge
+
+source /projects/F202500265DT4STF2/miniconda3/etc/profile.d/conda.sh
+set +u
+conda activate "$CONDA_ENV_NAME"
+set -u
+
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+
+cd "$WORKDIR"
+export PYTHONPATH="$WORKDIR:${PYTHONPATH:-}"
+export LD_LIBRARY_PATH="${CONDA_PREFIX}/lib:${LD_LIBRARY_PATH:-}"
+
+echo "Starting preprocessing on $(hostname)"
+python -u 1_PREPROCESS.py \
+  --train-scaler \
+  --sequence-count "$SEQUENCE_COUNT" \
+  --sequences-root "$CASE_SEQUENCES_ROOT" \
+  --split-strategy "$SPLIT_STRATEGY" \
+  --validation-figures "$VALIDATION_FIGURES"
+
+echo "Finished job ID $SLURM_JOB_ID on $(hostname)"

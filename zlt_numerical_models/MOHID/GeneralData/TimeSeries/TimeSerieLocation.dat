@@ -1,0 +1,11 @@
+IGNORE_ON                     : 1
+!DT_OUTPUT_TIME                : 60
+MAX_BUFFER_SIZE               : 10000
+
+<BeginTimeSerie>
+NAME                          : Condor
+COORD_X                       : -29.05
+COORD_Y                       : 38.55
+DEPTH_LEVEL                   : 0.0
+<EndTimeSerie>
+

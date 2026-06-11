@@ -1,0 +1,39 @@
+! Bathymetry file
+IN_BATIM      : ../../../GeneralData/Bathymetry/ZLT_Lvl1_4000m.dat
+
+! Input files
+SURF_DAT      : ../data/Atmosphere_1.dat
+DOMAIN        : ../data/Geometry_1.dat
+TURB_GOTM     : ../data/GOTM_1.dat
+IN_DAD3D      : ../data/Hydrodynamic_1.dat
+BOT_DAT       : ../data/InterfaceSedimentWater_1.dat
+AIRW_DAT      : ../data/InterfaceWaterAir_1.dat
+IN_MODEL      : ../data/Model_1.dat
+IN_TIDES      : ../data/Tide_1.dat
+IN_TURB       : ../data/Turbulence_1.dat
+DISPQUAL      : ../data/WaterProperties_1.dat
+
+! Output files
+ROOT          : ../res/
+ROOT_SRT      : ../res/Run_1/
+SURF_HDF      : ../res/Atmosphere_1.hdf
+OUT_DESF      : ../res/Hydrodynamic_1.hdf
+BOT_HDF       : ../res/InterfaceSedimentWater_1.hdf
+AIRW_HDF      : ../res/InterfaceWaterAir_1.hdf
+TURB_HDF      : ../res/Turbulence_1.hdf
+EUL_HDF       : ../res/WaterProperties_1.hdf
+
+! Restart files
+TURB_FIN      : ../res/GOTM_1.fin
+OUT_FIN       : ../res/Hydrodynamic_1.fin
+BOT_FIN       : ../res/InterfaceSedimentWater_1.fin
+AIRW_FIN      : ../res/InterfaceWaterAir_1.fin
+EUL_FIN       : ../res/WaterProperties_1.fin
+
+! Initialization files
+TURB_INI      : ../res/GOTM_0.fin
+IN_CNDI       : ../res/Hydrodynamic_0.fin
+BOT_INI       : ../res/InterfaceSedimentWater_0.fin
+AIRW_INI      : ../res/InterfaceWaterAir_0.fin
+EUL_INI       : ../res/WaterProperties_0.fin
+

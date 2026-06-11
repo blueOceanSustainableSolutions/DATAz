@@ -1,0 +1,42 @@
+{
+  "id": "atlantic",
+  "case_description": {
+    "area_name": "North Atlantic Ocean",
+    "coords": "[(37.92, -29.22), (37.92, -28.02), (39.12, -28.02), (39.12, -29.22)]",
+    "grid": {
+      "step": 400,
+      "step_unit": "m",
+      "grid_type": "spherical"
+    },
+    "open_boundaries": "['N','S','W','E']"
+  },
+  "simulation": {
+    "spinup_start": "2024-10-01 00:00",
+    "start": "2024-10-31 23:00",
+    "end": "2024-11-07 23:00",
+    "hotstart": "False",
+    "stationary": "False",
+    "integration_step": "10 MIN",
+    "parallel": "True",
+    "num_cores": 8,
+    "model": "SWAN4131"
+  },
+  "data": {
+    "upload_data": "False",
+    "storage_path": "./storage",
+    "force_overwrite": "False",
+    "bathy_source": "./data/bathymetry.nc",
+    "bdc_dataset_type": "era5",
+    "wind_dataset_type": "era5"
+  },
+  "output": {
+    "variables": "['HSig','PDIR','RTP']",
+    "save_output_fields": "True",
+    "save_spectres": "True",
+    "save_hotfile": "True",
+    "points": {}
+  },
+  "nesting": {
+    "nested_grid": null
+  }
+}
