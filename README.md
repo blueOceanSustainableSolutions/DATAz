@@ -48,11 +48,13 @@ The Hydrotwin dashboard encapsulates site-specific views, where:
 
 **1) Install Miniconda**
 
-The [Python](https://www.python.org/) programming language is used extensively in several numerical and surrogate models within the DATAz DTO. To get started, install the [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) distribution, which provides a lightweight Python environment and package manager. You can download Miniconda using:
+The [Python](https://www.python.org/) programming language is used extensively in several numerical and surrogate models within the DATAz DTO. To get started, install the [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) distribution, which provides a lightweight Python environment and package manager. You can download Miniconda on linux using e.g.:
 
 ```bash
 curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 ```
+
+Please refer to the latest conda documentation for other operating systems. 
 
 Once the download has completed, install Miniconda by running the following command in the terminal:
 
@@ -71,9 +73,11 @@ source ~/.bashrc
 Large datasets and model checkpoints are **not stored directly in the GitHub repository**. Instead, they are hosted in a public Azure Blob Storage container and tracked via [DVC](https://dvc.org/). This enables efficient management of large files while keeping the Git repository lightweight. To install DVC, along with the required Azure storage support, run:
 
 ```bash
-pip install "dvc[http]"
-pip install dvc-azure
+conda install "dvc[http]"
+conda install dvc-azure
 ```
+
+or use `pip` instead of `conda` 
 
 If prompted to confirm the installation of any packages or dependencies, type `Y` and press `Enter` to proceed. Once the installation is complete, DVC is ready to download the repository datasets.
 
