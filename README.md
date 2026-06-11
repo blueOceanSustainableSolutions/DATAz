@@ -23,7 +23,9 @@ The [`zlt_numerical_models`](zlt_numerical_models/) directory contains the confi
 
 The [`zlt_surrogate_models`](zlt_surrogate_models/) directory contains the data pre-processing and training pipelines used in the AI-based surrogates of the numerical models. For instance, the [`SWAN surrogate`](zlt_surrogate_models/SWAN/) uses Jupyter notebooks to handle boundary condition pre-processing, input preparation, and model training, enabling rapid approximation of wave conditions without running the SWAN numerical model. Similarly, the [`RAINDROP surrogate`](zlt_surrogate_models/RAINDROP/) uses Python scripts to train, evaluate, and predict the underwater radiated noise produced by ships without running the RAINDROP numerical model.
 
-# DTO Visualisation
+# Getting Started
+
+## DTO Visualisation
 
 The DATAz DTO site is presented through open access on blueOASIS' DTO dashboard framework, accessed via https://app.hydrotwin.ai. For access, please email info@blueoasis.pt and state your use-case.  
 
@@ -44,23 +46,22 @@ The Hydrotwin dashboard encapsulates site-specific views, where:
 - In-situ sensors tied to an acoustic deployment can be viewed through individual sensor tabs.
 - HT-C units offer a live listening mode.
 
-# Getting Started
+## System Setup
 
-**1) Install Miniconda**
+**1) Clone the repository**
 
-The [Python](https://www.python.org/) programming language is used extensively in several numerical and surrogate models within the DATAz DTO. To get started, install the [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) distribution, which provides a lightweight Python environment and package manager. You can download Miniconda on linux using e.g.:
-
-```bash
-curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-```
-
-Please refer to the latest conda documentation for other operating systems. 
-
-Once the download has completed, install Miniconda by running the following command in the terminal:
+The DATAz source code is hosted on [GitHub](https://github.com/blueOceanSustainableSolutions/DATAz/tree/master), and can be downloaded by cloning the repository to your local machine. Cloning creates a local copy of the repository, allowing you to access the codebase and track future updates. To clone the DATAz repository, run:
 
 ```bash
-bash ./Miniconda3-latest-Linux-x86_64.sh
+git clone https://github.com/blueOceanSustainableSolutions/DATAz.git
+cd DATAz
 ```
+
+**2) Install Miniconda**
+
+The [Python](https://www.python.org/) programming language is used extensively in several numerical and surrogate models within the DATAz DTO. To get started, install the [Miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) distribution, which provides a lightweight Python environment and package manager.
+
+Once the download has completed, install Miniconda by running the following the instructions. 
 
 Press `Enter` to  review the license agreement. Once you have reached the end of the license agreement, type `yes` and press `Enter` to accept the license terms. Next, press `Enter` to install Miniconda in your `/home/<username>` directory. When prompted, type `yes` and press `Enter` to automatically initialize Conda. Lastly, refresh the terminal by running:
 
@@ -68,7 +69,7 @@ Press `Enter` to  review the license agreement. Once you have reached the end of
 source ~/.bashrc
 ```
 
-**2) Install DVC**
+**3) Install DVC**
 
 Large datasets and model checkpoints are **not stored directly in the GitHub repository**. Instead, they are hosted in a public Azure Blob Storage container and tracked via [DVC](https://dvc.org/). This enables efficient management of large files while keeping the Git repository lightweight. To install DVC, along with the required Azure storage support, run:
 
@@ -80,15 +81,6 @@ conda install dvc-azure
 or use `pip` instead of `conda` 
 
 If prompted to confirm the installation of any packages or dependencies, type `Y` and press `Enter` to proceed. Once the installation is complete, DVC is ready to download the repository datasets.
-
-**3) Clone the repository**
-
-The DATAz source code is hosted on [GitHub](https://github.com/blueOceanSustainableSolutions/DATAz/tree/master), and can be downloaded by cloning the repository to your local machine. Cloning creates a local copy of the repository, allowing you to access the codebase and track future updates. To clone the DATAz repository, run:
-
-```bash
-git clone https://github.com/blueOceanSustainableSolutions/DATAz.git
-cd DATAz
-```
 
 **4) Pull the data**
 
