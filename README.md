@@ -15,7 +15,6 @@ The DATAz DTO relies on a suite of numerical modelling tools to simulate the oce
 - [RAINDROP](https://github.com/blueOceanSustainableSolutions/RAINDROP): A Python-based framework developed by blueOASIS to generate real-time holistic underwater acoustic maps, automating workflows including simulation setup, program execution, and data post-processing.
 - [REEF3D](https://github.com/REEF3D/REEF3D): An open-source phase-resolved wave model developed by the Norwegian University of Science and Technology to simulate nearshore hydrodynamics over complex bathymetry and coastlines.
 - [SWAN](https://gitlab.tudelft.nl/citg/wavemodels/swan): An open-source phase-averaged wave model developed by Delft University of Technology to simulate wind-generated waves in coastal regions and inland waters.
-- [WW3](https://github.com/NOAA-EMC/WW3): A community-driven wave modelling framework providing global-to-regional spectral wave forecasts, used here for boundary forcing and validation.
 
 The [`zlt_numerical_models`](zlt_numerical_models/) directory contains the configuration files, execution scripts, and post-processing tools used to set up, run, and analyse the numerical models supporting the DATAz DTO.
 
@@ -50,7 +49,7 @@ source ~/.bashrc
 
 **3) Install DVC**
 
-Large datasets and model checkpoints are **not stored directly in the GitHub repository**. Instead, they are hosted in a public Azure Blob Storage container and tracked via [DVC](https://dvc.org/). This enables efficient management of large files while keeping the Git repository lightweight. To install DVC, along with the required Azure storage support, run:
+Large datasets and model checkpoints are **not stored directly in the GitHub repository**. Instead, they are hosted in a public Azure Blob Storage container and tracked via [DVC](https://dvc.org/). The public remote configured in [.dvc](.dvc) provides read-only access to download repository data. This enables efficient management of large files while keeping the Git repository lightweight. Only repository maintainers with the appropriate write permissions can update the remote `azblob`. To install DVC, along with the required Azure storage support, run:
 
 ```bash
 conda install "dvc[http]"
@@ -103,7 +102,6 @@ bash scripts/run_raindrop.sh
 ```
 
 Depending on the selected model, the setup process may take several minutes to complete. Please refer to the User Manual and the Developer Manual for information on configuration options, input data requirements, and model outputs.
-
 
 ## DTO Visualisation
 
