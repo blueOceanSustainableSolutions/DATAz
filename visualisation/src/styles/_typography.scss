@@ -1,0 +1,128 @@
+/**
+ * Typography.
+ *
+ * The brand "Denim" web fonts were removed for the open build; everything uses a
+ * neutral system font stack. The copy-* utility classes and their responsive
+ * sizing (fontSizeResponsive, from _utils.scss) are preserved so ported markup
+ * keeps its layout.
+ */
+
+$font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+  Arial, sans-serif;
+
+// Base HTML and body font styles. 1rem = 10px makes the .Nrem scale convenient.
+html {
+  font-size: $base-font-size;
+
+  // Scale everything down ~15% on mobile.
+  @media (max-width: 767px) {
+    font-size: 8.5px;
+  }
+}
+
+body,
+html {
+  font-family: $font-sans;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Heading styles
+@mixin copy-h1 {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: -1px;
+  @include fontSizeResponsive(41.1, 4.7, 144, 6.8);
+}
+
+@mixin copy-h2 {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: -1px;
+  @include fontSizeResponsive(41.1, 3.9, 144, 5.4);
+}
+
+@mixin copy-h3 {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: -0.5px;
+  @include fontSizeResponsive(41.1, 3.3, 144, 4.3);
+}
+
+@mixin copy-h4 {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: -0.5px;
+  @include fontSizeResponsive(41.1, 2.7, 144, 3.5);
+}
+
+@mixin copy-h5 {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: -0.2px;
+  @include fontSizeResponsive(41.1, 2.3, 144, 2.8);
+}
+
+// Text styles
+@mixin copy-lead {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: 0px;
+  @include fontSizeResponsive(41.1, 1.9, 144, 2.2);
+}
+
+@mixin copy-lead-small {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: 0px;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+@mixin copy-body {
+  font-family: $font-sans;
+  line-height: 120%;
+  letter-spacing: -0.2px;
+  @include fontSizeResponsive(41.1, 1.6, 144, 1.8);
+}
+
+@mixin copy-small {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: 0px;
+  @include fontSizeResponsive(41.1, 1.3, 144, 1.4);
+}
+
+@mixin copy-small-semibold {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: 0px;
+  @include fontSizeResponsive(41.1, 1.3, 144, 1.4);
+}
+
+@mixin copy-extrasmall {
+  font-family: $font-sans;
+  line-height: 120%;
+  letter-spacing: 0px;
+  font-size: 1.1rem;
+}
+
+@mixin copy-chart {
+  font-family: $font-sans;
+  line-height: 100%;
+  letter-spacing: 0.18px;
+  font-size: 1.2rem;
+}
+
+.copy-h1 { @include copy-h1; }
+.copy-h2 { @include copy-h2; }
+.copy-h3 { @include copy-h3; }
+.copy-h4 { @include copy-h4; }
+.copy-h5 { @include copy-h5; }
+.copy-lead { @include copy-lead; }
+.copy-lead-small { @include copy-lead-small; }
+.copy-body { @include copy-body; }
+.copy-small { @include copy-small; }
+.copy-small-semibold { @include copy-small-semibold; }
+.copy-extrasmall { @include copy-extrasmall; }
+.copy-chart { @include copy-chart; }

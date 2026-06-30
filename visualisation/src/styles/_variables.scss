@@ -1,0 +1,128 @@
+/**
+ * SCSS variables + CSS custom properties.
+ *
+ * Neutralized for the open build: the brand identity colors (primary purple,
+ * teal secondary/text) were replaced with a generic blue/slate palette. The
+ * grey scale, chart colors, detection-level colors and status tokens are
+ * functional, not brand assets, and are kept as-is.
+ */
+
+// Base font size (1rem = 10px keeps the .Nrem spacing scale + fontSizeResponsive working)
+$base-font-size: 10px;
+
+// Animation variables
+$easing: ease-in-out;
+$duration-250: 250ms;
+$duration-300: 300ms;
+$duration-400: 400ms;
+$duration-500: 300ms;
+
+// Transition shortcuts
+$transition-250: $easing $duration-250;
+$transition-300: $easing $duration-300;
+$transition-400: $easing $duration-400;
+$transition-500: $easing $duration-500;
+
+// Shadow
+$shadow: 1px 2px 4px rgba(0, 0, 0, 0.12);
+
+// Border radius
+$rounded-4: 0.4rem;
+$rounded-8: 0.8rem;
+
+// CSS custom properties
+@layer base {
+  :root {
+    // Accent colors (neutral blue / slate)
+    --primary: 217 91% 60%; /* #2563eb */
+    --secondary: 222 47% 11%; /* #0f172a */
+
+    // Semantic tokens (flip in dark mode)
+    --surface: #ffffff;
+    --surface-elevated: #ffffff;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+
+    // Detection Levels colors
+    --detection-high: #fc8923;
+    --detection-medium: #ffcf33;
+    --detection-low: #5cd964;
+    --detection-none: #d9dede;
+    --detection-high-deep: #8a4608;
+    --detection-medium-deep: #866a0c;
+    --detection-low-deep: #146919;
+    --detection-none-deep: #7c7c7c;
+
+    // App background color
+    --app-background: #edf0f0;
+
+    // Utility colors
+    --white: #ffffff;
+    --offwhite: #edf0f0;
+    --black: #000000;
+    --grey-100: #f4f5f5;
+    --grey-200: #eaecec;
+    --grey-300: #d9dede;
+    --grey-400: #b5b8b8;
+    --grey-500: #777979;
+
+    // Charts colors
+    --chart-base: #546666;
+    --chart-base-lighter: #9fb5b5;
+    --chart-ice-blue: #86f2e5;
+    --chart-blue: #3989f9;
+    --chart-blue-dark: #063488;
+    --chart-purple: #8366ee;
+    --chart-pink: #e884ea;
+    --chart-green: #38bc72;
+    --chart-green-dark: #309f60;
+    --chart-yellow: #c7ec4f;
+    --chart-orange: #fc8923;
+
+    --error: #ec4d4d;
+
+    // Buttons hover state colors
+    --primary-hover: #1d4ed8;
+    --secondary-hover: #0b1220;
+
+    --primary-selected: #eff6ff;
+
+    // Semantic status CSS vars (forward to chart/grey/error tokens)
+    --st-active:         var(--chart-green);
+    --st-low-battery:    var(--chart-orange);
+    --st-charging:       var(--chart-blue);
+    --st-unresponsive:   var(--error);
+    --st-maintenance:    var(--grey-400);
+    --st-decommissioned: var(--grey-500);
+    --st-disabled:       var(--grey-400);
+  }
+
+  [data-theme="dark"] {
+    // Brighter accent for contrast on dark surfaces
+    --primary: 217 91% 70%; /* #5b8def */
+
+    // Semantic tokens
+    --surface: #262626;
+    --surface-elevated: #404040;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+
+    // App background
+    --app-background: #0a0a0a;
+    --offwhite: #0a0a0a;
+
+    // Grey scale (neutral dark)
+    --grey-100: #1a1a1a;
+    --grey-200: #2a2a2a;
+    --grey-300: #3a3a3a;
+    --grey-400: #6b6b6b;
+    --grey-500: #9ca3af;
+
+    // Detection none on dark
+    --detection-none: #3a3a3a;
+    --detection-none-deep: #5a5a5a;
+
+    // Accent selected on dark
+    --primary-selected: #172554;
+  }
+}
