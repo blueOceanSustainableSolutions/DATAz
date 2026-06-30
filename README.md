@@ -105,22 +105,16 @@ Depending on the selected model, the setup process may take several minutes to c
 
 ## DTO Visualisation
 
-The DATAz DTO site is presented through open access on blueOASIS' DTO dashboard framework, accessed via https://app.hydrotwin.ai. For access, please email info@blueoasis.pt and state your use-case.  
+The DATAz DTO monitoring dashboard is publicly accessible at **https://datazsite.z6.web.core.windows.net**. It provides a live view of the marine devices deployed at the DATAz Azores site, including their real-time status, acoustic detections, oceanographic measurements, and time-animated numerical model overlays.
 
-![1_main_view.png](visualisation/1_main_view.png)
+![1_main_view.png](visualisation/docs/images/01-dashboard.png)
 
-A user guide is provided in [visualisation](visualisation). 
+The front-end source code and full documentation are available in the [`visualisation`](visualisation/) directory. The dashboard is a React + Vite single-page application that can be run locally with `npm install && npm run dev`.
 
-The Hydrotwin dashboard contains:
+The dashboard is organised around a single monitoring site and provides the following views:
 
-- **Live status panel**: Real-time Hydrotwin environmental readings, sensor status, and environmental measurement availability.
-- **Detection timeline**: Chronological view of all detection events across modalities.
-- **Alert management console**: Active alerts, historical alert log, and response action tracking.
-
-The Hydrotwin dashboard encapsulates site-specific views, where:
-
-- A single site (DATAz, Azores) shows a unified view of all sensors.
-- Individual sensors can be selected for deeper analysis.
-- In-situ sensors tied to an acoustic deployment can be viewed through individual sensor tabs.
-- HT-C units offer a live listening mode.
+- **Site overview**: Map of every device's position with live status colouring, a device rail with current readings.
+- **Acoustic analysis & AI detections**: AI-classified sound events (vessels, dolphins), a zoomable detection timeline with per-bin inspection, and broadband sound-pressure-level charts.
+- **Metocean & environmental measurements**: Historical time series for wave height, wave period, wind, temperature, and related system metrics, with per-device selection.
+- **Numerical Visualizer**: Time-animated raster overlays from the DATAz numerical ocean models (RAINDROP, WaveWatch III) played directly on the map.
 

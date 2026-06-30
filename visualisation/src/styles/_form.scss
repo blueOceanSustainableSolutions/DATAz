@@ -1,0 +1,139 @@
+/**
+ * Search Input and Navbar Styles
+ *
+ * This file contains styles for search input fields and navbar search:
+ * - Clearing default search input styles
+ * - Hiding clear button in search inputs
+ * - Navbar search styles
+ */
+
+// Clearing default search input styles
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+// Hiding clear button in search inputs
+input.hide-clear[type="search"]::-webkit-search-decoration,
+input.hide-clear[type="search"]::-webkit-search-cancel-button,
+input.hide-clear[type="search"]::-webkit-search-results-button,
+input.hide-clear[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+// Navbar search styles
+.navbar-search {
+  @include copy-body;
+}
+
+// Select tag
+.custom-select-tag {
+  &__control {
+    border-radius: 4px !important;
+    border: 1px solid var(--grey-300) !important;
+    height: 5rem;
+  }
+
+  &__control--is-focused {
+    box-shadow: none !important;
+  }
+
+  &__placeholder {
+    @include copy-body;
+    color: var(--grey-500) !important;
+    margin-left: 1.3rem !important;
+    white-space: nowrap;
+  }
+
+  &__input-container {
+    font-size: 1.6rem !important;
+    padding-left: 0.6rem !important;
+    color: black !important;
+  }
+
+  &__indicators {
+    .custom-select-tag__indicator {
+      margin-right: 1.3rem;
+    }
+
+    .custom-select-tag__indicator-separator {
+      display: none;
+    }
+
+    .custom-select-tag__indicator svg {
+      display: none;
+    }
+
+    .custom-select-tag__indicator::after {
+      content: "";
+      display: inline-flex;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iNyIgdmlld0JveD0iMCAwIDEyIDciIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMC44OTk0IDAuOTQ5NzA3TDUuOTQ5NjcgNS44OTk0NUwwLjk5OTkxOSAwLjk0OTcwNyIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=");
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  &__menu {
+    margin-bottom: 0rem !important;
+    margin-top: 0.2rem !important;
+    z-index: 10 !important;
+    padding: 0.8rem;
+    max-height: 20.8rem;
+    overflow-y: auto;
+    border-radius: $rounded-4;
+    box-shadow: $shadow !important;
+    border: none !important;
+  }
+
+  &__menu-list {
+    padding: 0rem !important;
+  }
+
+  &__menu-notice {
+    @include copy-small;
+    color: var(--grey-400) !important;
+    text-align: left !important;
+  }
+
+  &__option {
+    padding: 1.2rem !important;
+    border-radius: $rounded-4;
+    @include copy-body;
+    transition: $transition-300;
+  }
+
+  &__option--is-focused {
+    background-color: var(--grey-100) !important;
+  }
+
+  &__multi-value {
+    background-color: white !important;
+    border: 1px solid var(--grey-400) !important;
+    border-radius: 50px !important;
+
+    &__label {
+      font-size: 1.4rem !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 100%;
+      letter-spacing: 0px;
+      padding: 0.7rem 0rem 0.7rem 0.8rem !important;
+    }
+
+    &__remove {
+      padding-right: 0.8rem !important;
+
+      &:hover {
+        background-color: transparent !important;
+      }
+    }
+  }
+}
+
+.custom-select-tag__control--is-focused {
+  .custom-select-tag__indicator {
+    transform: rotate(180deg) !important;
+  }
+}

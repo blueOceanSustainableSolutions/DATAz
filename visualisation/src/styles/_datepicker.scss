@@ -1,0 +1,173 @@
+/**
+ * Custom Datepicker Styles
+ *
+ * This file contains styles for customizing the appearance of a datepicker component:
+ * - Custom font styles for month and day
+ * - Layout and positioning of datepicker elements
+ * - Custom navigation buttons
+ * - Styling for day cells, including range selection
+ */
+
+// Custom font styles
+@mixin monthFontStyle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.2px;
+  font-size: 1.7rem;
+}
+
+@mixin dayFontStyle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.2px;
+  font-size: 1.3rem;
+}
+
+// Main datepicker container
+.custom-datepicker {
+  // Month layout
+  .rdp-months {
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    padding: 2.4rem;
+  }
+
+  // Month caption
+  .rdp-month {
+    .rdp-month_caption {
+      justify-content: center;
+
+      .rdp-caption_label {
+        @include monthFontStyle();
+      }
+    }
+  }
+
+  // Navigation buttons
+  .rdp-nav {
+    width: 100%;
+    justify-content: space-between;
+    top: 2.4rem;
+
+    // Previous button
+    .rdp-button_previous {
+      left: 2.4rem;
+      svg {
+        display: none;
+      }
+      &:after {
+        content: "";
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 2rem !important;
+        width: 2rem !important;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjA1MDggMTIuODk5NEw1LjEwMTAzIDcuOTQ5NjdMMTAuMDUwOCAyLjk5OTkyIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==") !important;
+      }
+    }
+
+    // Next button
+    .rdp-button_next {
+      right: 2.4rem;
+      svg {
+        display: none;
+      }
+      &:after {
+        content: "";
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 2rem !important;
+        width: 2rem !important;
+        transform: rotate(180deg);
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwLjA1MDggMTIuODk5NEw1LjEwMTAzIDcuOTQ5NjdMMTAuMDUwOCAyLjk5OTkyIiBzdHJva2U9ImJsYWNrIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==") !important;
+      }
+    }
+  }
+
+  // Calendar grid
+  .rdp-month_grid {
+    margin-top: 1.2rem;
+
+    // Weekday headers
+    thead tr th {
+      height: 3.6rem;
+      color: var(--grey-500);
+      @include dayFontStyle();
+    }
+
+    // Day cells
+    td,
+    td.rdp-range_start,
+    td.rdp-range_end {
+      background: transparent;
+      width: 3.6rem;
+      height: 3.6rem;
+    }
+
+    // Day buttons
+    .rdp-day_button {
+      border-radius: 0.4rem;
+      width: 100%;
+      height: 100%;
+      @include dayFontStyle();
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--grey-100);
+      }
+    }
+
+    // Disabled days
+    .rdp-disabled {
+      opacity: 1 !important;
+      color: var(--grey-400);
+    }
+
+    // Range selection
+    .rdp-range_start .rdp-day_button,
+    .rdp-range_end .rdp-day_button {
+      color: black;
+      background-color: var(--grey-300);
+      border: none;
+      @include dayFontStyle();
+    }
+
+    .rdp-range_middle .rdp-day_button {
+      background-color: var(--grey-100);
+      @include dayFontStyle();
+    }
+  }
+}
+
+@media screen and (max-width: 539px) {
+  .custom-datepicker {
+    --rdp-cell-size: 3.2rem;
+
+    .rdp-months {
+      padding: 1.2rem;
+    }
+
+    .rdp-nav {
+      top: 1.2rem;
+
+      .rdp-button_previous {
+        left: 1.2rem;
+      }
+
+      .rdp-button_next {
+        right: 1.2rem;
+      }
+    }
+
+    .rdp-month_grid {
+      td,
+      td.rdp-range_start,
+      td.rdp-range_end {
+        width: 3.2rem;
+        height: 3.2rem;
+      }
+    }
+  }
+}

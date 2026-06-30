@@ -1,0 +1,96 @@
+/**
+ * Chart and Plotly Styles
+ *
+ * This file contains styles for charts and Plotly-specific elements:
+ * - General chart styles
+ * - Chart title and subtitle styles
+ * - Noise Level Chart specific styles
+ * - Spotter Map
+ */
+
+// General chart styles
+.js-plotly-plot .plotly .modebar {
+  display: flex !important;
+  padding: 6px;
+}
+
+.js-plotly-plot .plotly .modebar-group {
+  display: flex !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.js-plotly-plot .plotly .modebar-group {
+  backdrop-filter: blur(16px) !important;
+}
+
+.js-plotly-plot .plotly .modebar-group:first-child {
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+  padding-left: 6px !important;
+}
+
+.js-plotly-plot .plotly .modebar-group:last-child {
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  padding-right: 6px !important;
+}
+
+.js-plotly-plot .plotly .modebar-btn {
+  padding: 16px 6px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.js-plotly-plot .plotly .modebar-btn > svg {
+  top: 0 !important;
+}
+
+.infolayer .legend {
+  transform: translate(100, 15%);
+}
+
+// Chart title and subtitle styles
+.chart-title {
+  font-size: 2.4rem;
+  color: var(--black);
+}
+
+.chart-subtitle {
+  font-size: 0.8rem;
+  color: var(--grey-400);
+}
+
+// Noise Level Chart specific styles
+
+// Hide the default value number
+.indicatorlayer .trace .numbers {
+  opacity: 0;
+}
+
+// Round corners of gauge value indicator
+.threshold-arc path {
+  stroke-linejoin: round !important;
+}
+
+// Spotter Map
+.maplibregl-ctrl-bottom-right {
+  display: none !important;
+}
+
+// Dashboard Map (react-map-gl)
+.dashboard-map-popup {
+  .maplibregl-popup-content {
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    background-color: var(--surface);
+    color: var(--text-primary);
+    font-family: inherit;
+  }
+
+  .maplibregl-popup-tip {
+    border-top-color: var(--surface);
+  }
+}

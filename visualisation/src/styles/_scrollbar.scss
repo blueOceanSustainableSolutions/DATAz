@@ -1,0 +1,32 @@
+/**
+ * Custom Scrollbar Styles
+ *
+ * This file contains styles for customizing the appearance of scrollbars:
+ * - Applies to all elements within the body
+ * - Customizes the width and height of the scrollbar
+ * - Styles the scrollbar track and thumb
+ */
+
+body * {
+  // Scrollbar width and height
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+  }
+
+  // Scrollbar track styles
+  &::-webkit-scrollbar-track {
+    background: var(--grey-200);
+    border-left: 6px solid transparent;
+    background-clip: padding-box;
+  }
+
+  // Scrollbar thumb styles
+  &::-webkit-scrollbar-thumb {
+    background: var(--grey-400) !important;
+    opacity: 1 !important;
+    opacity: 100%;
+    border-left: 6px solid transparent;
+    background-clip: padding-box;
+  }
+}

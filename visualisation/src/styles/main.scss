@@ -1,0 +1,32 @@
+/**
+ * Main stylesheet for the open single-site frontend.
+ * Tailwind directives + the trimmed set of SCSS partials the page actually uses.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "reset.scss";
+@import "utils.scss";
+@import "variables.scss";
+@import "typography.scss";
+@import "form.scss";
+@import "scrollbar.scss";
+@import "charts.scss";
+@import "dashboard-map.scss";
+@import "datepicker.scss";
+@import "spinner.scss";
+@import "tooltip.scss";
+
+// Global styles
+body {
+  background-color: var(--app-background);
+  transition: $transition-300;
+  overflow-x: hidden;
+}
+
+// Generic hover state
+.generic-hover {
+  @include genericHover();
+}
