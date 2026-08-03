@@ -9,7 +9,24 @@ Architecture overview:
 
 All tensors follow the convention (B, R, L):
   B = batch size, R = number of rays, L = points per ray.
+
+Geometry note
+-------------
+``t_max`` (see dataset.py) is expressed in "reference pixel" units — a
+physically-faithful range, rescaled so it coincides with the legacy
+pixel-count convention exactly when the ROI grid is isotropic. The
+model's own distance normalisation (``max_grid_dist``, the assumed
+corner-to-corner diagonal in those same units) must therefore also
+account for the ROI's true physical aspect ratio, not just assume a
+square grid. ``aspect_ratio`` (physical vertical extent / physical
+horizontal extent of the ROI, exposed by ``AcousticDataset``) is used
+for this: the true diagonal in reference-pixel units is
+``crop_size * sqrt(aspect_ratio + 1/aspect_ratio)``, which reduces
+exactly to the old ``sqrt(2) * crop_size`` when ``aspect_ratio == 1``
+(a physically square region).
 """
+
+import math
 
 import torch
 import torch.nn as nn
@@ -99,7 +116,7 @@ class AISEncoder(nn.Module):
         x: torch.Tensor,           # (B*R, ais_features)
         comp_ratio: torch.Tensor,  # (B*R, 1)
     ) -> torch.Tensor:             # (B*R, latent_dim)
-        ais_feats = x[:, 2:]       # speed, type, length (skip lat/lon)
+        ais_feats = x[:, 2:5]       # speed, type, length (skip lat/lon)
         return self.net(torch.cat([ais_feats, comp_ratio], dim=-1))
 
 
@@ -113,8 +130,22 @@ class RadialAcousticSurrogate(nn.Module):
     Args:
         bathy_latent (int): Latent dim for BathyEncoder.
         ais_latent   (int): Latent dim for AISEncoder.
-        crop_size    (int): Spatial grid side length used to normalise
-                            distances (sets max_grid_dist).
+        crop_size    (int): Spatial grid side length (pixel count) used
+                            to normalise distances.
+        aspect_ratio (float): Physical vertical extent / physical
+                            horizontal extent of the region of interest,
+                            as exposed by ``AcousticDataset.aspect_ratio``.
+                            Defaults to 1.0 (a physically square grid),
+                            which exactly reproduces the original
+                            ``max_grid_dist = sqrt(2) * crop_size``
+                            behaviour. Pass the dataset's true
+                            ``aspect_ratio`` for a geometrically correct
+                            normalisation on non-square regions.
+        max_grid_dist (float, optional): Explicit override for the
+                            corner-to-corner normalisation distance (in
+                            the same "reference pixel" units as
+                            ``t_max``), taking precedence over
+                            ``crop_size``/``aspect_ratio`` if given.
     """
 
     def __init__(
@@ -122,13 +153,25 @@ class RadialAcousticSurrogate(nn.Module):
         bathy_latent: int = 128,
         ais_latent: int = 64,
         crop_size: int = 256,
+        aspect_ratio: float = 1.0,
+        max_grid_dist: float = None,
     ):
         super().__init__()
 
         self.bathy_encoder = BathyEncoder(latent_dim=bathy_latent)
         self.ais_encoder   = AISEncoder(latent_dim=ais_latent)
 
-        self.max_grid_dist    = (2 ** 0.5) * crop_size
+        if max_grid_dist is not None:
+            # Explicit override, e.g. a precomputed physical diagonal.
+            self.max_grid_dist = float(max_grid_dist)
+        else:
+            # True corner-to-corner diagonal of a crop_size × crop_size
+            # grid whose two axes have physical scales in the ratio
+            # `aspect_ratio` (vertical:horizontal). Reduces exactly to
+            # sqrt(2) * crop_size when aspect_ratio == 1.
+            aspect_ratio = float(aspect_ratio) if aspect_ratio else 1.0
+            self.max_grid_dist = crop_size * math.sqrt(aspect_ratio + 1.0 / aspect_ratio)
+
         self.dist_mapping_dim = 16  # Fourier feature channels (sin + cos pairs)
 
         # Decoder input: bathy_latent + ais_latent + comp_ratio + Fourier feats

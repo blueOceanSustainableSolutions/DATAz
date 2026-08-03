@@ -22,12 +22,12 @@ from scipy.interpolate import griddata
 
 
 
-def plot_predicted_spl_radial(radial_output, spatial_meta, ship_lat, ship_lon, save_path=None):
+def plot_predicted_spl_radial(radial_output, spatial_meta, ship_lat, ship_lon, mask_path = "cache/land_mask_1000.npy", save_path=None):
     """
     Plots the raw 360x125 grid of SPL values as a flat 2D heatmap.
     Applies the cached Cartesian land mask to the ray coordinates, rendering land as black.
     """
-    mask_path = "cache/land_mask_256.npy"
+    
     if not os.path.exists(mask_path):
         raise FileNotFoundError(
             f" Critical Error: The required land mask file was not found at '{mask_path}'. "
@@ -86,12 +86,12 @@ def plot_predicted_spl_radial(radial_output, spatial_meta, ship_lat, ship_lon, s
     else:
         plt.show()
 
-def plot_predicted_spl_cartesian(radial_output, spatial_meta, ship_lat, ship_lon, save_path=None):
+def plot_predicted_spl_cartesian(radial_output, spatial_meta, ship_lat, ship_lon, mask_path = "cache/land_mask_1000.npy", save_path=None):
     """
     Interpolates the polar prediction matrix onto a geographic Cartesian grid.
     Overlays the static land mask, rendering land as black.
     """
-    mask_path = "cache/land_mask_256.npy"
+    
     if not os.path.exists(mask_path):
         raise FileNotFoundError(
             f" Critical Error: The required land mask file was not found at '{mask_path}'. "
