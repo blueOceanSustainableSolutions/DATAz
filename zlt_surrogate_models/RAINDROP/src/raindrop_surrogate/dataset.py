@@ -7,6 +7,22 @@ AcousticDataset   → raw tensors (ais, bathy_rays, spl_rays, t_max)
 scale_data()      → wraps each split in ScaledDatasetWrapper and
                     returns (train_ds, val_ds, test_ds, stats)
 custom_collate    → merges variable-length ship lists across a batch
+
+Geometry note
+-------------
+The lat/lon grid is not guaranteed to be physically square (e.g. it may
+span far more latitude than longitude, or vice-versa) even though it is
+stored as a ``crop_size × crop_size`` array. ``AcousticDataset`` computes
+a per-axis physical (km) pixel scale from the NetCDF grid at init time,
+and ``extract_radials`` casts rays in that physical space so that ray
+angles are true geographic bearings and ``t_max`` reflects true physical
+range rather than a raw pixel count. ``t_max`` is reported in units of a
+*reference* pixel scale (the geometric mean of the two axis scales) so
+that it is numerically identical to the legacy pixel-count ``t_max``
+whenever the grid happens to be isotropic. The dataset also exposes
+``self.aspect_ratio`` (physical vertical extent / physical horizontal
+extent of the ROI), which ``RadialAcousticSurrogate`` can use to compute
+a geometrically-correct normalisation diagonal — see model.py.
 """
 
 import os
@@ -23,6 +39,15 @@ from scipy.interpolate import LinearNDInterpolator, NearestNDInterpolator
 from shapely.geometry import Point
 from torch.utils.data import Dataset
 
+
+def _haversine_km(lat1, lon1, lat2, lon2):
+    """Great-circle distance in km between two lat/lon points."""
+    R = 6371.0088  # mean Earth radius, km
+    phi1, phi2 = np.radians(lat1), np.radians(lat2)
+    dphi = np.radians(lat2 - lat1)
+    dlambda = np.radians(lon2 - lon1)
+    a = np.sin(dphi / 2) ** 2 + np.cos(phi1) * np.cos(phi2) * np.sin(dlambda / 2) ** 2
+    return 2 * R * np.arcsin(np.sqrt(a))
 
 
 # 1.  Base Dataset
@@ -48,7 +73,8 @@ class AcousticDataset(Dataset):
     cache_dir : str
         Folder for pre-computed bathy / land-mask arrays.
     crop_size : int
-        Square spatial crop applied to the centre of the grid.
+        Square (in *pixel count*, not necessarily physical) spatial
+        crop applied to the centre of the grid.
     use_63hz : bool
         Whether to load the 63 Hz SPL files (True) or 125 Hz (False).
     use_pascal : bool
@@ -58,6 +84,18 @@ class AcousticDataset(Dataset):
         Number of angular rays sampled around each ship position.
     ray_points : int
         Number of equidistant samples along each ray.
+
+    Attributes (geometry-related, set in ``__init__``)
+    ----------------------------------------------------
+    km_per_lat_px, km_per_lon_px : float
+        Physical (km) size of one pixel step along each axis, derived
+        from the NetCDF grid's true lat/lon extents.
+    ref_km_per_px : float
+        Geometric mean of the two axis scales; the unit ``t_max`` is
+        reported in.
+    aspect_ratio : float
+        Physical vertical (lat) extent / physical horizontal (lon)
+        extent of the cropped ROI. 1.0 for a physically square region.
     """
 
     def __init__(
@@ -97,6 +135,34 @@ class AcousticDataset(Dataset):
             self.lat_max = self.target_lats.max()
             self.lon_min = self.target_lons.min()
             self.lon_max = self.target_lons.max()
+
+        # ── Physical (km) per-pixel scale, per axis ──────────────────
+        # The grid is stored as a crop_size × crop_size *pixel* array,
+        # but its physical (km) extent need not be square — e.g. the
+        # ROI may span far more latitude than longitude. We derive the
+        # true km-per-pixel scale on each axis independently so that ray
+        # casting (below) can operate in a physically faithful space.
+        lat_mid = 0.5 * (self.lat_min + self.lat_max)
+        lon_mid = 0.5 * (self.lon_min + self.lon_max)
+
+        lat_span_km = _haversine_km(self.lat_min, lon_mid, self.lat_max, lon_mid)
+        lon_span_km = _haversine_km(lat_mid, self.lon_min, lat_mid, self.lon_max)
+
+        self.km_per_lat_px = lat_span_km / max(crop_size - 1, 1)
+        self.km_per_lon_px = lon_span_km / max(crop_size - 1, 1)
+        # Reference isotropic pixel scale — t_max is reported in these
+        # units, which coincide exactly with the legacy pixel-count
+        # t_max whenever the grid IS square/isotropic (km_per_lat_px ==
+        # km_per_lon_px).
+        self.ref_km_per_px = float(np.sqrt(self.km_per_lat_px * self.km_per_lon_px))
+
+        # Physical aspect ratio of the ROI: vertical (lat) extent over
+        # horizontal (lon) extent. ==1 for a physically square region;
+        # >1 if taller than wide; <1 if wider than tall. Pass this to
+        # RadialAcousticSurrogate(..., aspect_ratio=...) so the model's
+        # distance normalisation matches the true ROI geometry instead
+        # of assuming a square grid.
+        self.aspect_ratio = float(lat_span_km / lon_span_km) if lon_span_km > 0 else 1.0
 
         self.ais_files, self.spl_files = self._match_files(ais_dir, spl_dir)
         self.bathy_csv    = bathy_csv
@@ -193,33 +259,53 @@ class AcousticDataset(Dataset):
     ):
         """Sample bathy and SPL along ``num_rays`` radials from a ship.
 
+        Ray casting is performed in a locally-flat physical (km) space
+        derived from ``self.km_per_lat_px`` / ``self.km_per_lon_px``, so
+        ray angles are true geographic bearings and ``t_max`` is true
+        physical range — even when the lat/lon grid spans very
+        different physical extents on each axis. ``t_max`` is returned
+        in units of the reference pixel scale ``self.ref_km_per_px``,
+        which is numerically identical to the legacy pixel-count
+        ``t_max`` whenever the grid is isotropic.
+
         Returns
         -------
         bathy_rays : ndarray (num_rays, ray_points)
         spl_rays   : ndarray (num_rays, ray_points)
-        t_max      : ndarray (num_rays,)  — pixel distance to grid edge
+        t_max      : ndarray (num_rays,)  — reference-pixel distance to grid edge
         """
         lat_idx = np.interp(ship_lat, self.target_lats, np.arange(self.crop_size))
         lon_idx = np.interp(ship_lon, self.target_lons, np.arange(self.crop_size))
         H, W    = self.crop_size, self.crop_size
 
+        # ── Physical (km) coordinates of the ship and grid extents ───
+        lat_km     = lat_idx * self.km_per_lat_px
+        lon_km     = lon_idx * self.km_per_lon_px
+        lat_max_km = (H - 1) * self.km_per_lat_px
+        lon_max_km = (W - 1) * self.km_per_lon_px
+
         angles  = np.deg2rad(np.arange(self.num_rays))
         cos_a, sin_a = np.cos(angles), np.sin(angles)
 
+        # ── Ray casting in physical space: true bearings, true range ─
         with np.errstate(divide="ignore", invalid="ignore"):
-            t_x = np.where(
-                cos_a > 0, (W - 1 - lon_idx) / cos_a,
-                np.where(cos_a < 0, -lon_idx / cos_a, np.inf),
+            t_x_km = np.where(
+                cos_a > 0, (lon_max_km - lon_km) / cos_a,
+                np.where(cos_a < 0, -lon_km / cos_a, np.inf),
             )
-            t_y = np.where(
-                sin_a > 0, (H - 1 - lat_idx) / sin_a,
-                np.where(sin_a < 0, -lat_idx / sin_a, np.inf),
+            t_y_km = np.where(
+                sin_a > 0, (lat_max_km - lat_km) / sin_a,
+                np.where(sin_a < 0, -lat_km / sin_a, np.inf),
             )
 
-        t_max = np.minimum(t_x, t_y)
-        r     = np.linspace(0, 1, self.ray_points)
-        x_pts = lon_idx + np.outer(t_max, r) * cos_a[:, None]
-        y_pts = lat_idx + np.outer(t_max, r) * sin_a[:, None]
+        t_max_km = np.minimum(t_x_km, t_y_km)
+        r          = np.linspace(0, 1, self.ray_points)
+        lon_km_pts = lon_km + np.outer(t_max_km, r) * cos_a[:, None]
+        lat_km_pts = lat_km + np.outer(t_max_km, r) * sin_a[:, None]
+
+        # ── Back to pixel-index space, only for grid sampling ────────
+        x_pts = lon_km_pts / self.km_per_lon_px
+        y_pts = lat_km_pts / self.km_per_lat_px
 
         coords     = np.vstack(
             (np.clip(y_pts, 0, H - 1).ravel(), np.clip(x_pts, 0, W - 1).ravel())
@@ -230,7 +316,12 @@ class AcousticDataset(Dataset):
         spl_rays   = ndimage.map_coordinates(spl_grid, coords, order=1).reshape(
             self.num_rays, self.ray_points
         )
-        return bathy_rays, spl_rays, t_max.astype(np.float32)
+
+        # ── t_max in reference-pixel units (== legacy pixel-count
+        #    t_max exactly when the grid is isotropic) ────────────────
+        t_max = (t_max_km / self.ref_km_per_px).astype(np.float32)
+
+        return bathy_rays, spl_rays, t_max
 
     # Dataset interface
 

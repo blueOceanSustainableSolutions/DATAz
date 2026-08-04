@@ -48,7 +48,7 @@ def load_or_compute_stats(cfg):
     train_sub, val_sub, test_sub = random_split(base_dataset, [train_sz, val_sz, test_sz])
     _, _, _, stats = scale_data(train_sub, val_sub, test_sub)
     
-    # Embed critical coordinate maps directly inside the metadata dictionary
+    # Embed critical coordinate maps and physical parameters directly inside the metadata dictionary
     stats["spatial_grid"] = {
         "lat_min": float(base_dataset.lat_min),
         "lat_max": float(base_dataset.lat_max),
@@ -59,7 +59,8 @@ def load_or_compute_stats(cfg):
         "crop_size": int(base_dataset.crop_size),
         "num_rays": int(base_dataset.num_rays),
         "ray_points": int(base_dataset.ray_points),
-        "use_pascal": bool(base_dataset.use_pascal)
+        "use_pascal": bool(base_dataset.use_pascal),
+        "aspect_ratio": float(base_dataset.aspect_ratio),
     }
     
     os.makedirs(os.path.dirname(cache_path), exist_ok=True)
@@ -141,7 +142,7 @@ def predict_single_ship(model, stats, raw_ship_features, bathy_grid, device):
     # 5. Reverse Scaling Transformation to Real Physical Units
     s_min, s_max = stats["spl"]["min"], stats["spl"]["max"]
     physical_preds = (scaled_preds * (s_max - s_min + 1e-8)) + s_min
-    physical_preds = physical_preds * water_mask # Force structural zeroing over land zones
+    physical_preds = physical_preds * water_mask  # Force structural zeroing over land zones
     
     # If the network output represents Pascal variations, process reverse-decibel scaling
     if spatial_meta["use_pascal"]:
@@ -170,6 +171,8 @@ def main():
     # Load cached parameters or lazy evaluate them on initial execution
     stats = load_or_compute_stats(cfg)
     crop_size = stats["spatial_grid"]["crop_size"]
+    # Retrieve aspect_ratio safely with a default fallback of 1.0 for legacy cache compatibility
+    aspect_ratio = stats["spatial_grid"].get("aspect_ratio", 1.0)
     cache_dir = cfg.data.get("cache_dir", "cache")
     
     # Swift-load localized static grid arrays bypassing base Dataset instantiations
@@ -178,11 +181,12 @@ def main():
         raise FileNotFoundError(f"Static layout missing at: {bathy_path}. Please execute 'train.py' once.")
     bathy_grid = np.load(bathy_path)
 
-    # Initialize model network wrapper
+    # Initialize model network wrapper using the cached aspect_ratio
     model = RadialAcousticSurrogate(
         bathy_latent=cfg.model.bathy_latent,
         ais_latent=cfg.model.ais_latent,
-        crop_size=crop_size
+        crop_size=crop_size,
+        aspect_ratio=aspect_ratio
     ).to(device)
 
     checkpoint_path = cfg.evaluation.checkpoint_path
@@ -198,7 +202,6 @@ def main():
         )
 
     model.eval()
-    
 
     # Consolidate raw observation array structures
     ship_features = [args.lat, args.lon, args.speed, args.type, args.length]

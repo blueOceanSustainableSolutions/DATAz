@@ -153,6 +153,7 @@ def main():
         bathy_latent=cfg.model.bathy_latent,
         ais_latent=cfg.model.ais_latent,
         crop_size=cfg.data.crop_size,
+        aspect_ratio=base_dataset.aspect_ratio
     ).to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=cfg.training.lr)
